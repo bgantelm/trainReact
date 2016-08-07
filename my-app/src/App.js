@@ -50,8 +50,6 @@ var TodoBox = React.createClass({
 				<h1 className="vert-offset-top-0">To do:</h1>
 				<TodoList data={this.state.data} filter={this.filter} removeNode={this.handleNodeRemoval} toggleComplete={this.handleToggleComplete} />
 				<TodoForm onTaskSubmit={this.handleSubmit} />
-				<h1 className="vert-offset-top-0">Done :</h1>
-				<TodoList2 data={this.state.data} filter={this.filter} removeNode={this.handleNodeRemoval} toggleComplete={this.handleToggleComplete} />
 			</div>
 
 		);
@@ -67,43 +65,48 @@ var TodoList = React.createClass({
 		this.props.toggleComplete(nodeId);
 		return;
 	},
-	render: function() {
-		var listNodes = this.props.data.map(function (listItem) {
-			if (listItem.complete !== 'true') {
+	togglefilter: function (e) {
+		if (listItem.complete !== 'true') {
 			return (
 				<TodoItem key={listItem.id} nodeId={listItem.id} task={listItem.task} complete={listItem.complete} removeNode={this.removeNode} toggleComplete={this.toggleComplete} />
 			);
 		}
-		},this);
-		return (
-			<ul className="list-group">
-				{listNodes}
-			</ul>
-		);
-	}
-});
-
-var TodoList2 = React.createClass({
-	removeNode: function (nodeId) {
-		this.props.removeNode(nodeId);
-		return;
 	},
-	toggleComplete: function (nodeId) {
-		this.props.toggleComplete(nodeId);
-		return;
-	},
-	render: function() {
-		var listNodes = this.props.data.map(function (listItem) {
-			if (listItem.complete === 'true') {
-			return (
-				<TodoItem key={listItem.id} nodeId={listItem.id} task={listItem.task} complete={listItem.complete} removeNode={this.removeNode} toggleComplete={this.toggleComplete} />
-			);
+	render: function(filter) {
+		var filters = 0
+		if (filters === 0) {
+			var filter = 0
+			filters = 1
 		}
+console.log(filter)
+		var listNodes = this.props.data.map(function (listItem) {
+			if (filter === 0) {
+			    return (
+				  <TodoItem key={listItem.id} nodeId={listItem.id} task={listItem.task} complete={listItem.complete} removeNode={this.removeNode} toggleComplete={this.toggleComplete} />
+			  );
+	  }
+	  else if (filter === 1) {
+	    if (listItem.complete !== 'true') {
+	      return (
+		      <TodoItem key={listItem.id} nodeId={listItem.id} task={listItem.task} complete={listItem.complete} removeNode={this.removeNode} toggleComplete={this.toggleComplete} />
+	      );
+	    }
+	  }
+	  else{
+	    if (listItem.complete !== 'true') {
+	      return (
+		      <TodoItem key={listItem.id} nodeId={listItem.id} task={listItem.task} complete={listItem.complete} removeNode={this.removeNode} toggleComplete={this.toggleComplete} />
+	      );
+      }
+    }
 		},this);
 		return (
+			<div>
+			<button onClick={this.togglefilter}> ALL </button>
 			<ul className="list-group">
 				{listNodes}
 			</ul>
+			</div>
 		);
 	}
 });
